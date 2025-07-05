@@ -1,0 +1,49 @@
+{
+  "name": "delivery-management-system",
+  "version": "1.0.0",
+  "description": "Multi-role delivery management system for Morocco with QR scanning and real-time tracking",
+  "main": "index.php",
+  "scripts": {
+    "install-php-deps": "composer install",
+    "setup-db": "mysql -u root -p delivery_system < sql/database_schema.sql",
+    "watch": "npx browser-sync start --proxy 'localhost/delivery-system' --files '**/*.php, **/*.css, **/*.js'",
+    "build-css": "npx sass assets/scss:assets/css --style compressed",
+    "minify-js": "npx uglify-js assets/js/app.js -o assets/js/app.min.js"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.0",
+    "@fortawesome/fontawesome-free": "^6.4.0",
+    "jquery": "^3.7.0",
+    "chart.js": "^4.3.0",
+    "sweetalert2": "^11.7.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.29.0",
+    "sass": "^1.62.0",
+    "uglify-js": "^3.17.0"
+  },
+  "keywords": [
+    "delivery",
+    "logistics",
+    "tracking",
+    "qr-code",
+    "php",
+    "mysql",
+    "bootstrap",
+    "morocco"
+  ],
+  "author": "Delivery System Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/delivery-management-system.git"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "php": ">=7.4.0"
+  },
+  "config": {
+    "php_version": "7.4",
+    "mysql_version": "5.7"
+  }
+}
