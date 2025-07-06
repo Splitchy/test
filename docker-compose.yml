@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-logistics}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-logistics}
+      POSTGRES_DB: ${POSTGRES_DB:-logistics}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    environment:
+      - DEBUG=${DEBUG:-0}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-changeme}
+      - POSTGRES_USER=${POSTGRES_USER:-logistics}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-logistics}
+      - POSTGRES_DB=${POSTGRES_DB:-logistics}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
